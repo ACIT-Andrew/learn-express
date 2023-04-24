@@ -8,9 +8,15 @@ const app = express();
 console.log("READY");
 
 app.set("view engine", "ejs");
+app.use(logger) 
+/* 
+This uses the middleware function "logger" declared below.
+Because it's called at the top, it applies to all requests.
+It can be called on individual requests as well, like in the .get request below.
+ */
 
-app.get("/", (req, res, next) => {
-  console.log("Here");
+app.get("/", logger, (req, res) => {
+  console.log("Homepage");
   // res.send('Hi'); // generic response
 
   // res.sendStatus(500) // sending status codes
@@ -29,5 +35,17 @@ app.get("/", (req, res, next) => {
 const userRouter = require('./routes/users') // import the routes from user.js  
 
 app.use('/users', userRouter) // links the routes from users.js into this main app file. "/users" is where we mount the "userRouter"
+
+
+//// MIDDLEWARE ////
+/* Middleware are functions that run between a client request and its server response.
+router.param() is one example of middleware.
+*/
+
+function logger(req, res, next){
+  // next is usually only used in middleware functions
+  console.log(req.originalUrl);
+  next()
+}
 
 app.listen(3000);
