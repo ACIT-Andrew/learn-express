@@ -26,4 +26,8 @@ app.get("/", (req, res, next) => {
   res.render("index", { text: "world"}); // rendering file; sometimes you will have to render html files
 });
 
+const userRouter = require('./routes/users') // import the routes from user.js  
+
+app.use('/users', userRouter) // links the routes from users.js into this main app file. "/users" is where we mount the "userRouter"
+
 app.listen(3000);
